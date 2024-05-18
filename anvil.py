@@ -1,4 +1,4 @@
-from anvil import *
+import gradio as gr
 import requests
 from bs4 import BeautifulSoup
 
@@ -42,35 +42,51 @@ def fetch_job_details(job_id):
     
     return job_post
 
-# Anvil app design
-class JobAlertsForm(JobAlertsFormTemplate):
-    def __init__(self, **properties):
-        # Set Form properties and Data Bindings
-        self.init_components(**properties)
-        
-        # Fetch job IDs
-        job_ids = fetch_job_ids(url)
+def generate_job_alerts():
+    # Fetch job IDs
+    job_ids = fetch_job_ids(url)
 
-        # Fetch job details
-        job_list = []
-        for job_id in job_ids[:7]:  # Fetch only the top 7 jobs
-            job_details = fetch_job_details(job_id)
-            job_list.append(job_details)
-        
-        # Format the job listings
-        job_alerts = []
-        for job in job_list:
-            if 'company_name' in job and 'position_name' in job and 'apply_link' in job:
-                alert = f"{job['company_name']} - {job['position_name']} ({job['job_level']})\nApply here: {job['apply_link']}\n"
-                job_alerts.append(alert)
-        
-        job_alert_text = "📢 Job Openings Alert! 📢\nExciting opportunities for Data Scientists,Business Analyst and Data Analysts with 0-2 years of experience!\n\n"
-        job_alert_text += "\n".join(job_alerts)
-        job_alert_text += "\n Follow For More Daily Job Updates 😊\n\n"
-        job_alert_text += "#JobAlert #Jobs #DataScientist #DataAnalyst #BusinessAnalyst #Freshers #CareerOpportunities #HiringNow"
+    # Fetch job details
+    job_list = []
+    for job_id in job_ids[:7]:  # Fetch only the top 7 jobs
+        job_details = fetch_job_details(job_id)
+        job_list.append(job_details)
+    
+    # Format the job listings
+    job_alerts = []
+    for job in job_list:
+        if 'company_name' in job and 'position_name' in job and 'apply_link' in job:
+            alert = f"{job['company_name']} - {job['position_name']} ({job['job_level']})\nApply here: {job['apply_link']}\n"
+            job_alerts.append(alert)
+    
+    job_alert_text = "📢 Job Openings Alert! 📢\nExciting opportunities for Data Scientists, Business Analysts, and Data Analysts with 0-2 years of experience!\n\n"
+    job_alert_text += "\n".join(job_alerts)
+    job_alert_text += "\n Follow For More Daily Job Updates 😊\n\n"
+    job_alert_text += "#JobAlert #Jobs #DataScientist #DataAnalyst #BusinessAnalyst #Freshers #CareerOpportunities #HiringNow"
 
-        # Set text area value
-        self.text_area_1.text = job_alert_text
+    return job_alert_text
 
-# Open the Job Alerts Form
-JobAlertsForm().show()
+def copy_to_clipboard(job_alert_text):
+    return gr.update(js=f"navigator.clipboard.writeText({job_alert_text!r})")
+
+# Define the Gradio interface
+with gr.Blocks() as interface:
+    job_alert_text = gr.Textbox(label="Job Alerts", interactive=False)
+    copy_button = gr.Button("Copy to Clipboard")
+    
+    copy_button.click(
+        fn=copy_to_clipboard,
+        inputs=job_alert_text,
+        outputs=None
+    )
+    
+    gr.Interface(
+        fn=generate_job_alerts,
+        inputs=[],
+        outputs=job_alert_text,
+        title="Job Alerts",
+        description="Get the latest job alerts for Data Scientist positions in India."
+    ).launch(share=True)
+
+# Launch the Gradio app
+interface.launch()
