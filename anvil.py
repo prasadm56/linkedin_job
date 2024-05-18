@@ -1,7 +1,7 @@
-import streamlit as st
 import requests
 from bs4 import BeautifulSoup
-import pyperclip
+import clipboard
+import click
 
 # Define the URL for job postings
 url = "https://www.linkedin.com/jobs-guest/jobs/api/seeMoreJobPostings/search?keywords=Data%2BScientist&location=India&geoId=102713980&f_JT=F&f_TPR=&f_E=1%2C2%2C3&start=25"
@@ -43,14 +43,10 @@ def fetch_job_details(job_id):
     
     return job_post
 
-# Streamlit app main function
+# Main function to fetch and display job alerts
 def main():
-    st.title("📢 Job Openings Alert! 📢")
-    
     # Fetch job IDs
-    #st.write("Fetching job listings...")
     job_ids = fetch_job_ids(url)
-    #st.write(f"Found {len(job_ids)} jobs")
 
     # Fetch job details
     job_list = []
@@ -65,20 +61,27 @@ def main():
             alert = f"{job['company_name']} - {job['position_name']} ({job['job_level']})\nApply here: {job['apply_link']}\n"
             job_alerts.append(alert)
     
-    job_alert_text = "📢 Job Openings Alert! 📢\nExciting opportunities for Data Scientists,Business Analyst and Data Analysts with 0-2 years of experience!\n\n"
+    job_alert_text = "📢 Job Openings Alert! 📢\nExciting opportunities for Data Scientists, Business Analysts, and Data Analysts with 0-2 years of experience!\n\n"
     job_alert_text += "\n".join(job_alerts)
-    job_alert_text += "\n Follow   For More Daily Job Updates 😊"
+    job_alert_text += "\n Follow For More Daily Job Updates 😊"
     job_alert_text += "\n"
     job_alert_text += "\n#JobAlert #Jobs #DataScientist #DataAnalyst #BusinessAnalyst #Freshers #CareerOpportunities #HiringNow"
 
-    # Display the job alerts in a text area for easy copying
-    st.text_area("Copy and paste the following job alerts:", value=job_alert_text, height=300)
-    
+    return job_alert_text
 
-    # Add a button to copy job alerts to clipboard
-    if st.button("Copy to Clipboard"):
-        pyperclip.copy(job_alert_text)
-        st.success("Job alerts copied to clipboard!")
+@click.command()
+def copy_to_clipboard():
+    job_alert_text = main()
+    
+    # Display the job alerts
+    print(job_alert_text)
+
+    # Copy the text to clipboard
+    try:
+        clipboard.copy(job_alert_text)
+        click.echo("Job alerts copied to clipboard!")
+    except Exception as e:
+        click.echo(f"Failed to copy to clipboard: {e}")
 
 if __name__ == "__main__":
-    main()
+    copy_to_clipboard()
