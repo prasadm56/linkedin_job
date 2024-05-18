@@ -1,6 +1,7 @@
-import gradio as gr
+import streamlit as st
 import requests
 from bs4 import BeautifulSoup
+import pyperclip
 
 # Define the URL for job postings
 url = "https://www.linkedin.com/jobs-guest/jobs/api/seeMoreJobPostings/search?keywords=Data%2BScientist&location=India&geoId=102713980&f_JT=F&f_TPR=&f_E=1%2C2%2C3&start=25"
@@ -42,9 +43,14 @@ def fetch_job_details(job_id):
     
     return job_post
 
-def generate_job_alerts():
+# Streamlit app main function
+def main():
+    st.title("📢 Job Openings Alert! 📢")
+    
     # Fetch job IDs
+    #st.write("Fetching job listings...")
     job_ids = fetch_job_ids(url)
+    #st.write(f"Found {len(job_ids)} jobs")
 
     # Fetch job details
     job_list = []
@@ -52,41 +58,27 @@ def generate_job_alerts():
         job_details = fetch_job_details(job_id)
         job_list.append(job_details)
     
-    # Format the job listings
+    # Format the job listings for copy-pasting
     job_alerts = []
     for job in job_list:
         if 'company_name' in job and 'position_name' in job and 'apply_link' in job:
             alert = f"{job['company_name']} - {job['position_name']} ({job['job_level']})\nApply here: {job['apply_link']}\n"
             job_alerts.append(alert)
     
-    job_alert_text = "📢 Job Openings Alert! 📢\nExciting opportunities for Data Scientists, Business Analysts, and Data Analysts with 0-2 years of experience!\n\n"
+    job_alert_text = "📢 Job Openings Alert! 📢\nExciting opportunities for Data Scientists,Business Analyst and Data Analysts with 0-2 years of experience!\n\n"
     job_alert_text += "\n".join(job_alerts)
-    job_alert_text += "\n Follow For More Daily Job Updates 😊\n\n"
-    job_alert_text += "#JobAlert #Jobs #DataScientist #DataAnalyst #BusinessAnalyst #Freshers #CareerOpportunities #HiringNow"
+    job_alert_text += "\n Follow   For More Daily Job Updates 😊"
+    job_alert_text += "\n"
+    job_alert_text += "\n#JobAlert #Jobs #DataScientist #DataAnalyst #BusinessAnalyst #Freshers #CareerOpportunities #HiringNow"
 
-    return job_alert_text
-
-def copy_to_clipboard(job_alert_text):
-    return gr.update(js=f"navigator.clipboard.writeText({job_alert_text!r})")
-
-# Define the Gradio interface
-with gr.Blocks() as interface:
-    job_alert_text = gr.Textbox(label="Job Alerts", interactive=False)
-    copy_button = gr.Button("Copy to Clipboard")
+    # Display the job alerts in a text area for easy copying
+    st.text_area("Copy and paste the following job alerts:", value=job_alert_text, height=300)
     
-    copy_button.click(
-        fn=copy_to_clipboard,
-        inputs=job_alert_text,
-        outputs=None
-    )
-    
-    gr.Interface(
-        fn=generate_job_alerts,
-        inputs=[],
-        outputs=job_alert_text,
-        title="Job Alerts",
-        description="Get the latest job alerts for Data Scientist positions in India."
-    ).launch(share=True)
 
-# Launch the Gradio app
-interface.launch()
+    # Add a button to copy job alerts to clipboard
+    if st.button("Copy to Clipboard"):
+        pyperclip.copy(job_alert_text)
+        st.success("Job alerts copied to clipboard!")
+
+if __name__ == "__main__":
+    main()
