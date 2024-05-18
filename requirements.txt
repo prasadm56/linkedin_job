@@ -1,4 +1,4 @@
 streamlit
 requests
-BeautifulSoup
+bs4
 pyperclip
