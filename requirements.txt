@@ -1,5 +1,5 @@
-pyperclip
-BeautifulSoup
-bs4
-requests
 streamlit
+requests
+bs4
+BeautifulSoup
+pyperclip
