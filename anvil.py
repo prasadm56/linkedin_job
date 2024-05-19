@@ -1,7 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
-import clipboard
-import click
+import streamlit as st
 
 # Define the URL for job postings
 url = "https://www.linkedin.com/jobs-guest/jobs/api/seeMoreJobPostings/search?keywords=Data%2BScientist&location=India&geoId=102713980&f_JT=F&f_TPR=&f_E=1%2C2%2C3&start=25"
@@ -54,7 +53,7 @@ def main():
         job_details = fetch_job_details(job_id)
         job_list.append(job_details)
     
-    # Format the job listings for copy-pasting
+    # Format the job listings for display
     job_alerts = []
     for job in job_list:
         if 'company_name' in job and 'position_name' in job and 'apply_link' in job:
@@ -69,19 +68,20 @@ def main():
 
     return job_alert_text
 
-@click.command()
-def copy_to_clipboard():
-    job_alert_text = main()
-    
-    # Display the job alerts
-    print(job_alert_text)
+# Streamlit display
+st.title("Job Alerts")
+job_alert_text = main()
+st.text_area("Job Openings Alert", job_alert_text)
 
-    # Copy the text to clipboard
+if st.button('Copy to Clipboard'):
     try:
-        clipboard.copy(job_alert_text)
-        click.echo("Job alerts copied to clipboard!")
+        import pyperclip
+        pyperclip.copy(job_alert_text)
+        st.success("Job alerts copied to clipboard!")
     except Exception as e:
-        click.echo(f"Failed to copy to clipboard: {e}")
+        st.error(f"Failed to copy to clipboard: {e}")
 
+# Run the Streamlit app
 if __name__ == "__main__":
-    copy_to_clipboard()
+    st.write("Running Streamlit app")
+    
