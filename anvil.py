@@ -59,12 +59,14 @@ def main():
         if 'company_name' in job and 'position_name' in job and 'apply_link' in job:
             alert = f"{job['company_name']} - {job['position_name']} ({job['job_level']})\nApply here: {job['apply_link']}\n"
             job_alerts.append(alert)
-    
-    job_alert_text = "📢 Job Openings Alert! 📢\nExciting opportunities for Data Scientists, Business Analysts, and Data Analysts with 0-2 years of experience!\n\n"
+
+
+    job_alert_text ="Day X of Job Postings: Helping Job Seekers Find Opportunities!"
+    job_alert_text += "📢 Job Openings Alert! 📢\nExciting opportunities for Data Scientists, Business Analysts, and Data Analysts with 0-2 years of experience!\n\n"
     job_alert_text += "\n".join(job_alerts)
     job_alert_text += "\n Follow For More Daily Job Updates 😊"
     job_alert_text += "\n"
-    job_alert_text += "\n#JobAlert #Jobs #DataScientist #DataAnalyst #BusinessAnalyst #Freshers #CareerOpportunities #HiringNow"
+    job_alert_text += "\n#JobAlert #Jobs #DataScientist #DataAnalyst #BusinessAnalyst #Freshers #CareerOpportunities #HiringNow #lookingforjob #candidatesearch #job #joboppurtunity #jobs #hiring #recruitment #jobsearch #jobseekers #employment #jobopportunities #graduates #hr #recruiting #applynow  #talentacquisition"
 
     return job_alert_text
 
