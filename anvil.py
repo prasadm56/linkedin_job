@@ -71,7 +71,7 @@ def main():
 # Streamlit display
 st.title("Job Alerts")
 job_alert_text = main()
-st.text_area("Job Openings Alert", job_alert_text,height=300)
+st.text_area("Job Openings Alert", job_alert_text,height=600)
 
 
 # Run the Streamlit app
