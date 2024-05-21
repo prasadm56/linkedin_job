@@ -62,7 +62,7 @@ def main():
 
 
     job_alert_text ="Day X of Job Postings: Helping Job Seekers Find Opportunities!"
-    job_alert_text += "📢 Job Openings Alert! 📢\nExciting opportunities for Data Scientists, Business Analysts, and Data Analysts with 0-2 years of experience!\n\n"
+    job_alert_text += "\n 📢 Job Openings Alert! 📢\nExciting opportunities for Data Scientists, Business Analysts, and Data Analysts with 0-2 years of experience!\n\n"
     job_alert_text += "\n".join(job_alerts)
     job_alert_text += "\n Follow For More Daily Job Updates 😊"
     job_alert_text += "\n"
