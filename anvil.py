@@ -49,7 +49,7 @@ def main():
 
     # Fetch job details
     job_list = []
-    for job_id in job_ids[:7]:  # Fetch only the top 7 jobs
+    for job_id in job_ids[:10]:  # Fetch only the top 7 jobs
         job_details = fetch_job_details(job_id)
         job_list.append(job_details)
     
@@ -71,15 +71,8 @@ def main():
 # Streamlit display
 st.title("Job Alerts")
 job_alert_text = main()
-st.text_area("Job Openings Alert", job_alert_text)
+st.text_area("Job Openings Alert", job_alert_text,height=300)
 
-if st.button('Copy to Clipboard'):
-    try:
-        import pyperclip
-        pyperclip.copy(job_alert_text)
-        st.success("Job alerts copied to clipboard!")
-    except Exception as e:
-        st.error(f"Failed to copy to clipboard: {e}")
 
 # Run the Streamlit app
 if __name__ == "__main__":
