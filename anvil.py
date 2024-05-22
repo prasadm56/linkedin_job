@@ -7,39 +7,46 @@ def fetch_job_ids(url):
     response = requests.get(url)
     list_data = response.text
     list_soup = BeautifulSoup(list_data, "html.parser")
-    page_jobs = list_soup.find_all('li')
+    job_cards = list_soup.find_all('div', {'class': 'base-card'})
     id_list = []
-    for job in page_jobs:
-        base_card_div = job.find('div', {'class': "base-card"})
-        if base_card_div:
-            job_id = base_card_div.get('data-entity-urn')
-            if job_id:
-                job_id = job_id.split(':')[-1]
-                id_list.append(job_id)
+
+    for job_card in job_cards:
+        job_id = job_card.get('data-entity-urn')
+        if job_id:
+            job_id = job_id.split(':')[-1]
+            id_list.append(job_id)
+
     return id_list
 
 # Function to fetch job details using job ID
 def fetch_job_details(job_id):
     job_url = f"https://www.linkedin.com/jobs-guest/jobs/api/jobPosting/{job_id}"
-    job_response = requests.get(job_url)
-    job_data = job_response.json()
-    job_post = {}
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.93 Safari/537.36"
+    }
+    job_response = requests.get(job_url, headers=headers)
+    
+    if job_response.status_code == 200:
+        job_data = job_response.json()
+        job_post = {}
 
-    company_name = job_data.get('companyName')
-    position_name = job_data.get('title')
-    apply_link = job_data.get('applyLink')
-    job_level = job_data.get('jobLevel')
+        company_name = job_data.get('companyName')
+        position_name = job_data.get('title')
+        apply_link = job_data.get('applyLink')
+        job_level = job_data.get('jobLevel')
 
-    if company_name:
-        job_post['company_name'] = company_name
-    if position_name:
-        job_post['position_name'] = position_name
-    if apply_link:
-        job_post['apply_link'] = apply_link
-    if job_level:
-        job_post['job_level'] = job_level
+        if company_name:
+            job_post['company_name'] = company_name
+        if position_name:
+            job_post['position_name'] = position_name
+        if apply_link:
+            job_post['apply_link'] = apply_link
+        if job_level:
+            job_post['job_level'] = job_level
 
-    return job_post
+        return job_post
+    else:
+        return None
 
 # Main function to fetch and display job alerts
 def main(url):
@@ -50,7 +57,8 @@ def main(url):
     job_list = []
     for job_id in job_ids[:10]:  # Fetch only the top 10 jobs
         job_details = fetch_job_details(job_id)
-        job_list.append(job_details)
+        if job_details:
+            job_list.append(job_details)
 
     # Format the job listings for display
     job_alerts = []
@@ -79,7 +87,3 @@ if url_input:
     st.text_area("Job Openings Alert", job_alert_text, height=600)
 else:
     st.write("Please enter a LinkedIn job search URL to get job alerts.")
-
-# Run the Streamlit app
-if __name__ == "__main__":
-    st.write("Running Streamlit app")
