@@ -3,7 +3,7 @@ from bs4 import BeautifulSoup
 import streamlit as st
 
 # Define the URL for job postings
-url = "https://www.linkedin.com/jobs/search?keywords=Data%20Scientist&location=India&geoId=102713980&f_JT=F&f_E=2%2C3&f_TPR=r86400&f_WT=1%2C3&position=1&pageNum=0"
+url = "https://www.linkedin.com/jobs/search/?currentJobId=3911032184&distance=25&f_E=2%2C3&geoId=102713980&keywords=Data%20Scientist&origin=JOBS_HOME_KEYWORD_HISTORY&refresh=true"
 
 # Function to fetch job IDs from the LinkedIn job postings page
 def fetch_job_ids(url):
