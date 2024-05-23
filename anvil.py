@@ -2,6 +2,9 @@ import requests
 from bs4 import BeautifulSoup
 import streamlit as st
 
+# Define the URL for job postings
+#url = "https://www.linkedin.com/jobs/search?keywords=Data%20Scientist&location=India&geoId=102713980&f_JT=F&f_E=2%2C3&f_TPR=r86400&f_WT=1%2C3&position=1&pageNum=0"
+
 # Function to fetch job IDs from the LinkedIn job postings page
 def fetch_job_ids(url):
     response = requests.get(url)
@@ -46,7 +49,7 @@ def main(url):
 
     # Fetch job details
     job_list = []
-    for job_id in job_ids[:10]:  # Fetch only the top 10 jobs
+    for job_id in job_ids[:10]:  # Fetch only the top 7 jobs
         job_details = fetch_job_details(job_id)
         job_list.append(job_details)
     
@@ -57,7 +60,8 @@ def main(url):
             alert = f"{job['company_name']} - {job['position_name']} ({job['job_level']})\nApply here: {job['apply_link']}\n"
             job_alerts.append(alert)
 
-    job_alert_text = "Day X of Job Postings: Helping Job Seekers Find Opportunities!"
+
+    job_alert_text ="Day X of Job Postings: Helping Job Seekers Find Opportunities!"
     job_alert_text += "\n 📢 Job Openings Alert! 📢\nExciting opportunities for Data Scientists, Business Analysts, and Data Analysts with 0-2 years of experience!\n\n"
     job_alert_text += "\n".join(job_alerts)
     job_alert_text += "\n Follow For More Daily Job Updates 😊"
@@ -68,10 +72,10 @@ def main(url):
 
 # Streamlit display
 st.title("Job Alerts")
-input_url = st.text_input("Enter LinkedIn job postings URL:", "https://www.linkedin.com/jobs/search?keywords=Data%20Scientist&location=India&geoId=102713980&f_JT=F&f_E=2%2C3&f_TPR=r86400&f_WT=1%2C3&position=1&pageNum=0")
-if input_url:
-    job_alert_text = main(input_url)
-    st.text_area("Job Openings Alert", job_alert_text, height=600)
+url=st.text_input("Input Url")
+job_alert_text = main(url)
+st.text_area("Job Openings Alert", job_alert_text,height=600)
+
 
 # Run the Streamlit app
 if __name__ == "__main__":
