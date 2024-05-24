@@ -87,11 +87,13 @@ url2 = st.text_input("Enter the URL for Business Analyst job postings", "https:/
 
 # Fetch and display job alerts
 job_alert_text = main(url1, url2)
-st.text_area("Job Openings Alert", job_alert_text,height=600)
+job_alert_area = st.text_area("Job Openings Alert", job_alert_text, height=600)
 
 # Add a "Copy to clipboard" button
-if st.download_button("Copy to clipboard", job_alert_text, file_name="job_alerts.txt", mime="text/plain"):
+if st.button("Copy to clipboard"):
     st.write("Job alerts copied to clipboard!")
+    st.balloons()
+    pyperclip.copy(job_alert_area.get_value())
 
 # Run the Streamlit app
 if __name__ == "__main__":
