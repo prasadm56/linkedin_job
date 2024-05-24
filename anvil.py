@@ -104,3 +104,4 @@ job_alert_area = st.text_area("Job Openings Alert", job_alert_text, height=600)
 # Run the Streamlit app
 if __name__ == "__main__":
     st.write("Running Streamlit app")
+ 
