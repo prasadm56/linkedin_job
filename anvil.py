@@ -56,7 +56,7 @@ def main(url1, url2):
 
     # Fetch job details for Business Analyst positions
     job_list2 = []
-    for job_id in job_ids2[2:8]:  # Fetch only the top 5 jobs
+    for job_id in job_ids2[:5]:  # Fetch only the top 5 jobs
         job_details = fetch_job_details(job_id)
         if 'position_name' in job_details:
             job_list2.append(job_details)
@@ -78,7 +78,7 @@ def main(url1, url2):
     job_alert_text += "\n Exciting opportunities for Data Scientists, Business Analysts, and Data Analysts with 0-2 years of experience!"
     job_alert_text += "\n"
     job_alert_text += "\n"
-    job_alert_text += "\n".join(job_alerts)
+    job_alerts_text += "\n".join(job_alerts)
     job_alert_text += "\n"
     job_alert_text += "\n Follow @Prasad Mukkawar For More Daily Job Updates 😊"
     job_alert_text += "\n"
