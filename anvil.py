@@ -71,7 +71,7 @@ def main(url1, url2):
             job_alerts.append(alert)
 
     job_alert_text ="Day X of Job Postings: Helping Job Seekers Find Opportunities!"
-    job_alert_text += "\n 📢 Job Openings Alert! 📢
+    job_alert_text += "\n 📢 Job Openings Alert! 📢"
     job_alert_text += "\n Exciting opportunities for Data Scientists, Business Analysts, and Data Analysts with 0-2 years of experience!\n \n "
     job_alert_text += "\n".join(job_alerts)
     job_alert_text += "\n Follow @Prasad Mukkawar For More Daily Job Updates 😊"
