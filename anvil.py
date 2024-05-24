@@ -1,3 +1,4 @@
+
 import requests
 from bs4 import BeautifulSoup
 import streamlit as st
@@ -88,12 +89,6 @@ url2 = st.text_input("Enter the URL for Business Analyst job postings", "https:/
 # Fetch and display job alerts
 job_alert_text = main(url1, url2)
 job_alert_area = st.text_area("Job Openings Alert", job_alert_text, height=600)
-
-# Add a "Copy to clipboard" button
-if st.button("Copy to clipboard"):
-    st.write("Job alerts copied to clipboard!")
-    st.balloons()
-    pyperclip.copy(job_alert_area.get_value())
 
 # Run the Streamlit app
 if __name__ == "__main__":
