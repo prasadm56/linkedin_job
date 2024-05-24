@@ -40,15 +40,27 @@ def fetch_job_details(job_id):
     return job_post
 
 # Define the main function to fetch and display job alerts
-def main(url):
-    # Fetch job IDs
-    job_ids = fetch_job_ids(url)
+def main(url1, url2):
+    # Fetch job IDs for Data Scientist positions
+    job_ids1 = fetch_job_ids(url1)
 
-    # Fetch job details
-    job_list = []
-    for job_id in job_ids[:10]:  # Fetch only the top 7 jobs
+    # Fetch job details for Data Scientist positions
+    job_list1 = []
+    for job_id in job_ids1[:5]:  # Fetch only the top 5 jobs
         job_details = fetch_job_details(job_id)
-        job_list.append(job_details)
+        job_list1.append(job_details)
+
+    # Fetch job IDs for Business Analyst positions
+    job_ids2 = fetch_job_ids(url2)
+
+    # Fetch job details for Business Analyst positions
+    job_list2 = []
+    for job_id in job_ids2[:5]:  # Fetch only the top 5 jobs
+        job_details = fetch_job_details(job_id)
+        job_list2.append(job_details)
+
+    # Merge job lists
+    job_list = job_list1 + job_list2
 
     # Format the job listings for display
     job_alerts = []
@@ -69,11 +81,12 @@ def main(url):
 # Streamlit display
 st.title("Job Alerts")
 
-# Take URL as input from the user
-url = st.text_input("Enter the URL for job postings", "https://www.linkedin.com/jobs/search?keywords=Data%20Analyst&location=India&geoId=102713980&trk=public_jobs_jobs-search-bar_search-submit&position=1&pageNum=0")
+# Take URLs as input from the user
+url1 = st.text_input("Enter the URL for Data Scientist job postings", "https://www.linkedin.com/jobs/search?keywords=Data%20Scientist&location=India&geoId=102713980&trk=public_jobs_jobs-search-bar_search-submit&position=1&pageNum=0")
+url2 = st.text_input("Enter the URL for Business Analyst job postings", "https://www.linkedin.com/jobs/search?keywords=Business%20Analyst&location=India&geoId=102713980&trk=public_jobs_jobs-search-bar_search-submit&position=1&pageNum=0")
 
 # Fetch and display job alerts
-job_alert_text = main(url)
+job_alert_text = main(url1, url2)
 st.text_area("Job Openings Alert", job_alert_text,height=600)
 
 # Run the Streamlit app
