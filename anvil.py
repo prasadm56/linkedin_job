@@ -89,6 +89,10 @@ url2 = st.text_input("Enter the URL for Business Analyst job postings", "https:/
 job_alert_text = main(url1, url2)
 st.text_area("Job Openings Alert", job_alert_text,height=600)
 
+# Add a "Copy to clipboard" button
+if st.download_button("Copy to clipboard", job_alert_text, file_name="job_alerts.txt", mime="text/plain"):
+    st.write("Job alerts copied to clipboard!")
+
 # Run the Streamlit app
 if __name__ == "__main__":
     st.write("Running Streamlit app")
