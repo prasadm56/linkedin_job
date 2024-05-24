@@ -56,7 +56,7 @@ def main(url1, url2):
 
     # Fetch job details for Business Analyst positions
     job_list2 = []
-    for job_id in job_ids2[:5]:  # Fetch only the top 5 jobs
+    for job_id in job_ids2[2:8]:  # Fetch only the top 5 jobs
         job_details = fetch_job_details(job_id)
         if 'position_name' in job_details:
             job_list2.append(job_details)
