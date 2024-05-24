@@ -48,7 +48,7 @@ def main(url1, url2, excluded_companies):
     job_list1 = []
     for job_id in job_ids1[2:8]:  # Fetch only the top 5 jobs
         job_details = fetch_job_details(job_id)
-        if job_details['company_name'] not in excluded_companies and job_details['position_name'] in ['Data Scientist', 'Business Analyst', 'Data Analyst']:
+        if 'company_name' in job_details and job_details['company_name'] not in excluded_companies and job_details['position_name'] in ['Data Scientist', 'Business Analyst', 'Data Analyst']:
             job_list1.append(job_details)
 
     # Fetch job IDs for Business Analyst positions
@@ -58,7 +58,7 @@ def main(url1, url2, excluded_companies):
     job_list2 = []
     for job_id in job_ids2[:5]:  # Fetch only the top 5 jobs
         job_details = fetch_job_details(job_id)
-        if job_details['company_name'] not in excluded_companies and job_details['position_name'] in ['Data Scientist', 'Business Analyst', 'Data Analyst']:
+        if 'company_name' in job_details and job_details['company_name'] not in excluded_companies and job_details['position_name'] in ['Data Scientist', 'Business Analyst', 'Data Analyst']:
             job_list2.append(job_details)
 
     # Merge job lists
@@ -94,7 +94,7 @@ url1 = st.text_input("Enter the URL for Data Scientist job postings", "https://w
 url2 = st.text_input("Enter the URL for Business Analyst job postings", "https://www.linkedin.com/jobs/search?keywords=Business%20Analyst&location=India&geoId=102713980&trk=public_jobs_jobs-search-bar_search-submit&position=1&pageNum=0")
 
 # Take a list of excluded companies as input from the user
-excluded_companies = st.text_input("Enter a list of companies to exclude from the job postings, separated by commas", "google ,microsoft,infosys")
+excluded_companies = st.text_input("Enter a list of companies to exclude from the job postings, separated by commas", "")
 excluded_companies = [x.strip() for x in excluded_companies.split(",")] if excluded_companies else []
 
 # Fetch and display job alerts
