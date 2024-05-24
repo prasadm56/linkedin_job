@@ -1,4 +1,3 @@
-
 import requests
 from bs4 import BeautifulSoup
 import streamlit as st
@@ -41,7 +40,7 @@ def fetch_job_details(job_id):
     return job_post
 
 # Define the main function to fetch and display job alerts
-def main(url1, url2):
+def main(url1, url2, excluded_companies):
     # Fetch job IDs for Data Scientist positions
     job_ids1 = fetch_job_ids(url1)
 
@@ -49,7 +48,8 @@ def main(url1, url2):
     job_list1 = []
     for job_id in job_ids1[2:8]:  # Fetch only the top 5 jobs
         job_details = fetch_job_details(job_id)
-        job_list1.append(job_details)
+        if job_details['company_name'] not in excluded_companies and job_details['position_name'] in ['Data Scientist', 'Business Analyst', 'Data Analyst']:
+            job_list1.append(job_details)
 
     # Fetch job IDs for Business Analyst positions
     job_ids2 = fetch_job_ids(url2)
@@ -58,7 +58,8 @@ def main(url1, url2):
     job_list2 = []
     for job_id in job_ids2[:5]:  # Fetch only the top 5 jobs
         job_details = fetch_job_details(job_id)
-        job_list2.append(job_details)
+        if job_details['company_name'] not in excluded_companies and job_details['position_name'] in ['Data Scientist', 'Business Analyst', 'Data Analyst']:
+            job_list2.append(job_details)
 
     # Merge job lists
     job_list = job_list1 + job_list2
@@ -92,8 +93,12 @@ st.title("Job Alerts")
 url1 = st.text_input("Enter the URL for Data Scientist job postings", "https://www.linkedin.com/jobs/search?keywords=Data%20Scientist&location=India&geoId=102713980&trk=public_jobs_jobs-search-bar_search-submit&position=1&pageNum=0")
 url2 = st.text_input("Enter the URL for Business Analyst job postings", "https://www.linkedin.com/jobs/search?keywords=Business%20Analyst&location=India&geoId=102713980&trk=public_jobs_jobs-search-bar_search-submit&position=1&pageNum=0")
 
+# Take a list of excluded companies as input from the user
+excluded_companies = st.text_input("Enter a list of companies to exclude from the job postings, separated by commas", "google ,microsoft,infosys")
+excluded_companies = [x.strip() for x in excluded_companies.split(",")] if excluded_companies else []
+
 # Fetch and display job alerts
-job_alert_text = main(url1, url2)
+job_alert_text = main(url1, url2, excluded_companies)
 job_alert_area = st.text_area("Job Openings Alert", job_alert_text, height=600)
 
 # Run the Streamlit app
