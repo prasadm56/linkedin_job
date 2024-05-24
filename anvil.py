@@ -30,7 +30,7 @@ def fetch_job_details(job_id):
 
     if company_name_tag:
         job_post['company_name'] = company_name_tag.text.strip()
-    if position_name_tag and position_name_tag.text.strip() != 'Not Applicable':
+    if position_name_tag:
         job_post['position_name'] = position_name_tag.text
     if apply_link_tag:
         job_post['apply_link'] = apply_link_tag['href']
@@ -48,8 +48,7 @@ def main(url1, url2):
     job_list1 = []
     for job_id in job_ids1[2:8]:  # Fetch only the top 5 jobs
         job_details = fetch_job_details(job_id)
-        if 'position_name' in job_details:
-            job_list1.append(job_details)
+        job_list1.append(job_details)
 
     # Fetch job IDs for Business Analyst positions
     job_ids2 = fetch_job_ids(url2)
@@ -58,8 +57,7 @@ def main(url1, url2):
     job_list2 = []
     for job_id in job_ids2[:5]:  # Fetch only the top 5 jobs
         job_details = fetch_job_details(job_id)
-        if 'position_name' in job_details:
-            job_list2.append(job_details)
+        job_list2.append(job_details)
 
     # Merge job lists
     job_list = job_list1 + job_list2
