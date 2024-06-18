@@ -27,7 +27,7 @@ def fetch_job_details(job_id):
     position_name_tag = job_soup.find('h2', {'class': 'top-card-layout__title font-sans text-lg papabear:text-xl font-bold leading-open text-color-text mb-0 topcard__title'})
     apply_link_tag = job_soup.find('a', {'class': 'topcard__link'})
     job_level_tag = job_soup.find('span', {'class': "description__job-criteria-text description__job-criteria-text--criteria"})
-
+    
     if company_name_tag:
         job_post['company_name'] = company_name_tag.text.strip()
     if position_name_tag:
@@ -36,6 +36,9 @@ def fetch_job_details(job_id):
         job_post['apply_link'] = apply_link_tag['href']
     if job_level_tag:
         job_post['job_level'] = job_level_tag.text.strip()
+    
+    # Assuming the job level text could be used as an experience requirement
+    job_post['exp_required'] = job_level_tag.text.strip() if job_level_tag else "Not specified"
 
     return job_post
 
@@ -46,7 +49,7 @@ def main(url1, url2):
 
     # Fetch job details for Data Scientist positions
     job_list1 = []
-    for job_id in job_ids1[2:8]: # Fetch only the top 5 jobs
+    for job_id in job_ids1[2:8]:  # Fetch only the top 5 jobs
         job_details = fetch_job_details(job_id)
         job_list1.append(job_details)
 
@@ -65,11 +68,11 @@ def main(url1, url2):
     # Format the job listings for display
     job_alerts = []
     for job in job_list:
-        if 'company_name' in job and 'position_name' in job and 'apply_link' in job:
-            alert = f"{job['company_name']} - {job['position_name']} ({job['job_level']})\nApply here: {job['apply_link']}\n"
+        if 'company_name' in job and 'position_name' in job and 'apply_link' in job and 'exp_required' in job:
+            alert = f"{job['company_name']} is hiring for {job['position_name']} (Experience Required: {job['exp_required']})\nApply here: {job['apply_link']}\n"
             job_alerts.append(alert)
 
-    job_alert_text ="Day X of Job Postings: Helping Job Seekers Find Opportunities!"
+    job_alert_text = "Day X of Job Postings: Helping Job Seekers Find Opportunities!"
     job_alert_text += "\n"
     job_alert_text += "\n 📢 Job Openings Alert! 📢"
     job_alert_text += "\n"
@@ -80,7 +83,7 @@ def main(url1, url2):
     job_alert_text += "\n"
     job_alert_text += "\n Follow @Prasad Mukkawar For More Daily Job Updates 😊"
     job_alert_text += "\n"
-    job_alert_text += "\n#JobAlert #Jobs #DataScientist #DataAnalyst #BusinessAnalyst #Freshers #CareerOpportunities #HiringNow #lookingforjob #candidatesearch #job #joboppurtunity #jobs #hiring #recruitment #jobsearch #jobseekers #employment #jobopportunities #graduates #hr #recruiting #applynow  #talentacquisition"
+    job_alert_text += "\n#JobAlert #Jobs #DataScientist #DataAnalyst #BusinessAnalyst #Freshers #CareerOpportunities #HiringNow #lookingforjob #candidatesearch #job #joboppurtunity #jobs #hiring #recruitment #jobsearch #jobseekers #employment #jobopportunities"
 
     return job_alert_text
 
@@ -88,8 +91,8 @@ def main(url1, url2):
 st.title("Job Alerts")
 
 # Take URLs as input from the user
-url1 = st.text_input("Enter the URL for Data Scientist job postings", "https://www.linkedin.com/jobs/search?keywords=Data%20Scientist&location=India&geoId=102713980&trk=public_jobs_jobs-search-bar_search-submit&position=1&pageNum=0")
-url2 = st.text_input("Enter the URL for Business Analyst job postings", "https://www.linkedin.com/jobs/search?keywords=Business%20Analyst&location=India&geoId=102713980&trk=public_jobs_jobs-search-bar_search-submit&position=1&pageNum=0")
+url1 = st.text_input("Enter the URL for Data Scientist job postings", "https://www.linkedin.com/jobs/search?keywords=Data%20Scientist&location=India&geoId=102713980&f_TPR=r86400&f_E=3%2C4&position=1&pageNum=0")
+url2 = st.text_input("Enter the URL for Business Analyst job postings", "https://www.linkedin.com/jobs/search?keywords=Business%20Analyst&location=India&geoId=102713980&f_TPR=r86400&f_E=3%2C4&position=1&pageNum=0")
 
 # Fetch and display job alerts
 job_alert_text = main(url1, url2)
